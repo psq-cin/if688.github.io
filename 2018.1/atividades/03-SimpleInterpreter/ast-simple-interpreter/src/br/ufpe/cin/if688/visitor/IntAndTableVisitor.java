@@ -54,26 +54,57 @@ public class IntAndTableVisitor implements IVisitor<IntAndTable> {
 
 	@Override
 	public IntAndTable visit(EseqExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		t = e.getStm().accept(new Interpreter(t));
+		double r = e.getExp().accept(this).result;
+		IntAndTable iat = new IntAndTable(r, t);
+		return iat;
 	}
 
 	@Override
 	public IntAndTable visit(IdExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		String id = e.getId();
+		double value = 0;
+		Table iterTable = t;
+		while (iterTable != null) {
+			if (iterTable.id == id) {
+				value = iterTable.value;
+				break;
+			} else {
+				iterTable = iterTable.tail;
+			}
+		}
+		if (iterTable == null) return null;
+		IntAndTable iat = new IntAndTable(value, t);
+		return iat;
 	}
 
 	@Override
 	public IntAndTable visit(NumExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		IntAndTable iat = new IntAndTable(e.getNum(), e.accept(new Interpreter(t)));
+		return iat;
 	}
 
 	@Override
 	public IntAndTable visit(OpExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		double l = e.getLeft().accept(this).result;
+		double r = e.getRight().accept(this).result;
+		double ret = 8008135;
+		switch (e.getOper()) {
+		case 1: // +
+			ret = l + r;
+			break;
+		case 2: // -
+			ret = l - r;
+			break;
+		case 3: // *
+			ret = l * r;
+			break;
+		case 4: // /
+			ret = l / r;
+			break;	
+		}
+		IntAndTable iat = new IntAndTable(ret, t);
+		return iat;
 	}
 
 	@Override

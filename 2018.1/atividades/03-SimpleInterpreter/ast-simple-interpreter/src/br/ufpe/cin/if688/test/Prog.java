@@ -83,7 +83,7 @@ public class Prog {
 								)
 						);
 
-		// print(print(0,1,2,3,4),5)
+		// print( (print(0,1,2,3,4),5) )
 		static Stm printPrint = 
 						new PrintStm(
 								new LastExpList(

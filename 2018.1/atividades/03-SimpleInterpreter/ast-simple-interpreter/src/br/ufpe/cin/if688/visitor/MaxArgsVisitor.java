@@ -35,19 +35,20 @@ public class MaxArgsVisitor implements IVisitor<Integer> {
 	@Override
 	public Integer visit(PrintStm s) {
 
-		return null;
+		return s.getExps().accept(this);
 	}
 
 	@Override
 	public Integer visit(Exp e) {
 		// TODO Auto-generated method stub
-		return null;
+		return e.accept(this);
 	}
 
 	@Override
 	public Integer visit(EseqExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		int exp = e.getExp().accept(this);
+		int stm = e.getStm().accept(this); // basicamente sempre 0 pela logica do eseq se eu entendi
+		return Math.max(exp, stm);
 	}
 
 	@Override
@@ -62,26 +63,29 @@ public class MaxArgsVisitor implements IVisitor<Integer> {
 
 	@Override
 	public Integer visit(OpExp e) {
-		// TODO Auto-generated method stub
-		return null;
+		int esq = e.getLeft().accept(this);
+		int dir = e.getRight().accept(this);
+		return Math.max(esq, dir);
 	}
 
 	@Override
 	public Integer visit(ExpList el) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return el.accept(this);
 	}
 
 	@Override
 	public Integer visit(PairExpList el) {
-		// TODO Auto-generated method stub
-		return null;
+		int dedentro = el.getHead().accept(this);
+		int resto = 1 + el.getTail().accept(this);
+		
+		return Math.max(dedentro, resto);
 	}
 
 	@Override
 	public Integer visit(LastExpList el) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return Math.max(1, el.getHead().accept(this));
 	}
 
 }
